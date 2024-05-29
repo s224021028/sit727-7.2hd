@@ -14,8 +14,8 @@ jobs:
       GKE_CLUSTER: autopilot-cluster-1
       GKE_ZONE: australia-southeast1
       K8S_NAMESPACE: default
-      IMAGE_FRONTEND: gcr.io/${{ env.PROJECT_ID }}/stories-frontend
-      IMAGE_BACKEND: gcr.io/${{ env.PROJECT_ID }}/stories-backend
+      IMAGE_FRONTEND: gcr.io/sit727-24t1-jarjana-f2b2922/stories-frontend
+      IMAGE_BACKEND: gcr.io/sit727-24t1-jarjana-f2b2922/stories-backend
 
     steps:
     - name: Checkout repository
