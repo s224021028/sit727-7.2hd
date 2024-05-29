@@ -14,8 +14,8 @@ jobs:
       GKE_CLUSTER: autopilot-cluster-1
       GKE_ZONE: australia-southeast1
       K8S_NAMESPACE: default
-      FRONTEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/stories-frontend:latest
-      BACKEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/stories-backend:latest
+      FRONTEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/stories-frontend
+      BACKEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/stories-backend
 
     steps:
     - name: Checkout repository
@@ -31,14 +31,14 @@ jobs:
     - name: Build and push backend image
       run: |
         cd ./server
-        docker build -t ${{ env.BACKEND_IMAGE }} .
-        docker push ${{ env.BACKEND_IMAGE }}
+        docker build -t ${{ env.BACKEND_IMAGE }}:latest .
+        docker push ${{ env.BACKEND_IMAGE }}:latest
         
     - name: Build and push backend image
       run: |
         cd ./client
-        docker build -t ${{ env.FRONTEND_IMAGE }} .
-        docker push ${{ env.FRONTEND_IMAGE }}
+        docker build -t ${{ env.FRONTEND_IMAGE }}:latest .
+        docker push ${{ env.FRONTEND_IMAGE }}:latest
      
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v1
