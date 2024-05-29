@@ -1,0 +1,47 @@
+name: Deploy MERN Stack to GKE
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      PROJECT_ID: sit727-24t1-jarjana-f2b2922
+      GKE_CLUSTER: autopilot-cluster-1
+      GKE_ZONE: australia-southeast1
+      K8S_NAMESPACE: default
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v1
+      with:
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        project_id: ${{ env.PROJECT_ID }}
+
+    - name: Configure Docker to use gcr.io
+      run: gcloud auth configure-docker
+
+    - name: Get GKE credentials
+      run: gcloud container clusters get-credentials ${{ env.GKE_CLUSTER }} --zone ${{ env.GKE_ZONE }} --project ${{ env.PROJECT_ID }}
+
+    - name: Deploy with Helm
+      run: |
+        helm upgrade --install backend ./helm-charts/backend \
+        helm upgrade --install frontend ./helm-charts/frontend \
+        helm upgrade --install stories-mongo --set auth.enabled=false,architecture=replicaSet,service.type=LoadBalancer,replicaSet.replicas.secondary=1 bitnami/mongodb
+        helm upgrade --install stories-prometheus bitnami/prometheus
+        helm upgrade --install stories-grafana bitnami/grafana
