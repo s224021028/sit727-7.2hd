@@ -3,7 +3,7 @@ replicaCount: 1
 image:
   repository: s224021028/stories-frontend
   pullPolicy: Always
-  tag: "1"
+  tag: "2"
 
 imagePullSecrets: []
 nameOverride: ""

@@ -31,14 +31,14 @@ jobs:
     - name: Build and push backend image
       run: |
         cd ./server
-        docker build -t ${{ env.BACKEND_IMAGE }}:1 .
-        docker push ${{ env.BACKEND_IMAGE }}:1
+        docker build -t ${{ env.BACKEND_IMAGE }}:2 .
+        docker push ${{ env.BACKEND_IMAGE }}:2
         
     - name: Build and push frontend image
       run: |
         cd ./client
-        docker build -t ${{ env.FRONTEND_IMAGE }}:1 .
-        docker push ${{ env.FRONTEND_IMAGE }}:1
+        docker build -t ${{ env.FRONTEND_IMAGE }}:2 .
+        docker push ${{ env.FRONTEND_IMAGE }}:2
      
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v1
