@@ -14,10 +14,31 @@ jobs:
       GKE_CLUSTER: autopilot-cluster-1
       GKE_ZONE: australia-southeast1
       K8S_NAMESPACE: default
+      FRONTEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/stories-frontend:latest
+      BACKEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/stories-backend:latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to Docker Hub
+      run: |
+        echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+    
+    - name: Build and push backend image
+      run: |
+        cd ./server
+        docker build -t ${{ env.BACKEND_IMAGE }} .
+        docker push ${{ env.BACKEND_IMAGE }}
+        
+    - name: Build and push backend image
+      run: |
+        cd ./client
+        docker build -t ${{ env.FRONTEND_IMAGE }} .
+        docker push ${{ env.FRONTEND_IMAGE }}
      
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v1
