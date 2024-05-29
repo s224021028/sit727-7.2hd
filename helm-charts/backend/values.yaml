@@ -21,7 +21,7 @@ podSecurityContext: {}
 securityContext: {}
 
 service:
-  type: NodePort
+  type: LoadBalancer
   port: 3001
 
 ingress:
