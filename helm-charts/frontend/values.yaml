@@ -50,7 +50,7 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
 
 config:
-  backend_url: http://stories-backend-stories-backend-charts:3001
+  backend_url: http://34.118.232.101:3001
 
 nodeSelector: {}
 
