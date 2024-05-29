@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: s224021028/stories-frontend
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   tag: "latest"
 
 imagePullSecrets: []
@@ -50,7 +50,7 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
 
 config:
-  backend_url: http://10.152.183.226:3001
+  backend_url: http://stories-backend-stories-backend-charts:3001
 
 nodeSelector: {}
 
