@@ -14,8 +14,6 @@ jobs:
       GKE_CLUSTER: autopilot-cluster-1
       GKE_ZONE: australia-southeast1
       K8S_NAMESPACE: default
-      IMAGE_FRONTEND: gcr.io/sit727-24t1-jarjana-f2b2922/stories-frontend
-      IMAGE_BACKEND: gcr.io/sit727-24t1-jarjana-f2b2922/stories-backend
 
     steps:
     - name: Checkout repository
@@ -25,25 +23,22 @@ jobs:
       uses: google-github-actions/auth@v1
       with:
         credentials_json: ${{ secrets.GCP_SA_KEY }}
-    
-    - name: Set up Helm
-      uses: azure/setup-helm@v1
 
     - name: Deploy with Helm
       run: |
-        helm repo add bitnami https://charts.bitnami.com/bitnami
-        helm upgrade --install stories-mongo bitnami/mongodb \
+        helm3 repo add bitnami https://charts.bitnami.com/bitnami
+        helm3 upgrade --install stories-mongo bitnami/mongodb \
           --set auth.enabled=false \
           --set architecture=replicaSet \
           --set replicaSet.replicas.secondary=1
-        helm upgrade --install backend ./helm-charts/backend \
+        helm3 upgrade --install backend ./helm-charts/backend \
           --namespace ${{ env.K8S_NAMESPACE }} \
           --create-namespace \
           --set image.repository=${{ env.IMAGE_BACKEND }} \
           --set image.tag=latest
-        helm upgrade --install frontend ./helm-charts/frontend \
+        helm3 upgrade --install frontend ./helm-charts/frontend \
           --namespace ${{ env.K8S_NAMESPACE }} \
           --set image.repository=${{ env.IMAGE_FRONTEND }} \
           --set image.tag=latest
-        helm upgrade --install stories-prometheus bitnami/prometheus
-        helm upgrade --install stories-grafana bitnami/grafana
+        helm3 upgrade --install stories-prometheus bitnami/prometheus
+        helm3 upgrade --install stories-grafana bitnami/grafana
