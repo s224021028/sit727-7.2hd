@@ -26,19 +26,19 @@ jobs:
 
     - name: Deploy with Helm
       run: |
-        helm3 repo add bitnami https://charts.bitnami.com/bitnami
-        helm3 upgrade --install stories-mongo bitnami/mongodb \
+        helm repo add bitnami https://charts.bitnami.com/bitnami
+        helm upgrade --install stories-mongo bitnami/mongodb \
           --set auth.enabled=false \
           --set architecture=replicaSet \
           --set replicaSet.replicas.secondary=1
-        helm3 upgrade --install backend ./helm-charts/backend \
+        helm upgrade --install backend ./helm-charts/backend \
           --namespace ${{ env.K8S_NAMESPACE }} \
           --create-namespace \
           --set image.repository=${{ env.IMAGE_BACKEND }} \
           --set image.tag=latest
-        helm3 upgrade --install frontend ./helm-charts/frontend \
+        helm upgrade --install frontend ./helm-charts/frontend \
           --namespace ${{ env.K8S_NAMESPACE }} \
           --set image.repository=${{ env.IMAGE_FRONTEND }} \
           --set image.tag=latest
-        helm3 upgrade --install stories-prometheus bitnami/prometheus
-        helm3 upgrade --install stories-grafana bitnami/grafana
+        helm upgrade --install stories-prometheus bitnami/prometheus
+        helm upgrade --install stories-grafana bitnami/grafana
