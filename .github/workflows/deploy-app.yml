@@ -32,7 +32,7 @@ jobs:
       run: |
         cd ./server
         docker build -t ${{ env.BACKEND_IMAGE }}:3 .
-        docker push ${{ env.BACKEND_IMAGE }}:2
+        docker push ${{ env.BACKEND_IMAGE }}:3
         
     - name: Build and push frontend image
       run: |
